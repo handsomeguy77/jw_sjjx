@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>湖南理工实验室</title>
+  <link rel="stylesheet" href="css/denglu.css" />
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery.slider.min.js"></script>
+</head>
+<body>
+<div id="bg_wrap">
+  <div><img src="img/1.jpg" alt="" width="100%" height="100%"></div>
+  <div><img src="img/2.jpg" alt="" width="100%" height="100%"></div>
+  <div><img src="img/3.jpg" alt="" width="100%" height="100%"></div>
+</div>
+<div id="Login">
+      <img id="title" class="move" src="img/hnist.png" alt="">
+      <form action="/login" method='POST'  target="_blank">
+          <input  type="text" placeholder="用户名"class="txt move" name="username"autocomplete="off" required="required" />
+          <input   type="password"placeholder="密码" class="txt move" name="password"/ required="required">
+          <div id="slider1"   class="move" class="slider"></div>
+          <input  type="submit" class="but move" id="submit" value="登 陆" action=''/>
+      </form>
+</div>
+<script>
+      var yangze=false;
+      $("#slider1").slider({
+      		callback: function(result) {
+      			$("#result1").text(result);
+            			 yangze=result;
+      		}
+      	});
+
+      $("#submit").click(function(){
+
+        var data=JSON.stringify({"name":$("#Login input[name='username']").val(),"password":$("#Login input[name='password']").val()})
+        if ($("#Login input[name='username']").val()!="") {
+          if ($("#Login input[name='password']").val()!="") {
+              if (yangze) {
+                  alert("发去数据成功");
+              }else {
+                alert("验证码发生错误");
+                return false;
+              }
+          }
+        }
+      });
+
+
+
+
+    (function(){
+      var timer=null;
+      oImg=document.querySelectorAll('#bg_wrap div')
+      var len=oImg.length;
+      var index=0;
+      timer=setInterval(function(){
+        oImg[index].style.opacity=0;
+        index++;
+        index%=len;
+        oImg[index].style.opacity=1;
+      },5000)
+    })();
+
+    //弹跳
+    (function(){
+      var oMove=document.querySelectorAll('.move');
+      var len=oMove.length;
+      var timer=null;
+      var timeout=null;
+      var speed=3;
+      move(len-1);
+      function move(index){
+        if (index<0) {
+          clearInterval(timer);
+            clearTimeout(timeout);
+            return;
+        }
+        var end=150+(index)*60;
+        console.log("end:"+end);
+        timer=setInterval(function(){
+          speed+=3;
+          var T=oMove[index].offsetTop+speed;
+          console.log(speed);
+          if (T>end) {
+              T=end
+              speed*=-1;
+              speed*=0.3
+          }
+          oMove[index].style.top=T+"px"
+        },20)
+        timeout=setTimeout(function () {
+              clearInterval(timer);
+              move(index-1)
+        }, 1000);
+      }
+    })()
+
+</script>
+</body>
+</html>
